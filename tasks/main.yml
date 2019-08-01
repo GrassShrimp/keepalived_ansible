@@ -1,6 +1,24 @@
 ---
+- name: generate config files of keepalived
+  template:
+    src: keepalived.conf.j2
+    dest: "{{ role_path }}/files/{{ item.hostname }}.conf"
+  vars:
+    vrrp_instance: "{{ item.hostname }}"
+    state: "{{ item.state | upper() }}"
+    interface: "{{ item.interface }}"
+    priority: "{{ item.priority }}"
+    virtual_ipaddress: "{{ virtual_ipaddress }}"
+  with_items: "{{ hosts }}"
+  delegate_to: localhost
+  run_once: true
 - name: Install keepalived package
   apt:
       name: ['keepalived']
       state: present
       update_cache: yes
+- name: upload config to server
+  copy:
+    src: "{{ ansible_hostname }}.conf"
+    dest: "/etc/keepalived/keepalived.conf"
+    mode: 644

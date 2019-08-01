@@ -1,2 +1,5 @@
 ---
-# vars file for roles/keepalived
+virtual_ipaddress: '192.168.1.100'
+hosts:
+  - { hostname: 'keepalived-1', ip_address: '172.28.128.3', priority: 250, state: 'master', interface: 'enp0s9' }
+  - { hostname: 'keepalived-2', ip_address: '172.28.128.4', priority: 200, state: 'backup', interface: 'enp0s9' }
