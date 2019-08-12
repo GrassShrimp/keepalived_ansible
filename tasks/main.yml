@@ -1,4 +1,11 @@
 ---
+- name: enable ip_forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
 - name: generate config files of keepalived
   template:
     src: keepalived.conf.j2
