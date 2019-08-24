@@ -29,8 +29,12 @@
     src: "{{ ansible_hostname }}.conf"
     dest: "/etc/keepalived/keepalived.conf"
     mode: 644
+- name: check status of keepalived service
+  service_facts:
+  register: keepalived_state
 - name: start keepalived service
   systemd:
     state: started
     name: keepalived
     enabled: yes
+  when: keepalived_state.ansible_facts.services.keepalived.state != "running"
